@@ -64,7 +64,8 @@ def converter_densidade(value, from_unit, to_unit):
 st.title("Calculadora de Propriedades da Água - IAPWS")
 
 # Entrada de dados
-st.subheader("Selecione duas propriedades para calcular as outras")
+st.subheader("Selecione duas propriedades para calcular as demais")
+st.text("Somente são válidos os pares: TP, Ph, Ps, hs, Tx e Px.")
 
 # Propriedades disponíveis
 propriedades = {
@@ -134,6 +135,7 @@ if st.button("Calcular"):
             
             # Exibindo as propriedades restantes com conversão para as unidades escolhidas
             st.subheader("Propriedades da Água Calculadas")
+            st.write(f"Energia Interna (kJ/kg): {agua.u:.2f}")
             if propriedades[prop1_label] != "T" and propriedades[prop2_label] != "T":
                 temperatura = converter_temperatura(agua.T, "K", "°C")
                 st.write(f"Temperatura (°C): {temperatura:.2f}")
@@ -145,17 +147,75 @@ if st.button("Calcular"):
                 st.write(f"Entalpia (kJ/kg): {entalpia:.2f}")
             if propriedades[prop1_label] != "s" and propriedades[prop2_label] != "s":
                 entropia = converter_entropia(agua.s, "kJ/kg·K", "kJ/kg·K")
-                st.write(f"Entropia (kJ/kg·K): {entropia:.2f}")
+                st.write(f"Entropia (kJ/kg·K): {entropia:.4f}")
             if propriedades[prop1_label] != "rho" and propriedades[prop2_label] != "rho":
                 densidade = converter_densidade(agua.rho, "kg/m³", "kg/m³")
                 st.write(f"Densidade (kg/m³): {densidade:.2f}")
+                st.write(f"Volume específico (m³/kg): {agua.v:.5f}")
             if propriedades[prop1_label] == "x" or propriedades[prop2_label] == "x":
                 st.write(f"Título (x): {agua.x:.2f}")
-
-            st.write(f"Calor específico (kJ/kg·K): {agua.cp:.2f}")
-            st.write(f"Viscosidade dinâmica (Pa·s): {agua.mu:.5f}")
-            st.write(f"Condutividade térmica (W/m·K): {agua.k:.5f}")
         except Exception as e:
             st.error(f"Erro ao calcular as propriedades: {str(e)}")
+
+        try:
+            st.write(f"Energia Livre de Gibbs (kJ/kg): {agua.g:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Energia Livre de Gibbs.]")
+        try:
+            st.write(f"Energia Livre de Helmholtz (kJ/kg): {agua.a:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Energia Livre de Helmholtz.]")
+        try:
+            st.write(f"Calor Específico a Pressão Constante (kJ/kg·K): {agua.cp:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular o Calor Específico a Pressão Constante.]")
+        try:
+            st.write(f"Calor Específico a Volume Constante (kJ/kg·K): {agua.cv:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular o Calor Específico a Volume Constante.]")
+        try:
+            st.write(f"Fator de Compressibilidade: {agua.Z:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Fator de Compressibilidade.]")
+        try:
+            st.write(f"Fugacidade (MPa): {agua.Z:.2f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Fugacidade.]")
+        try:
+            st.write(f"Viscosidade Dinâmica (Pa·s): {agua.mu:.6f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Viscosidade Dinâmica.]")
+        try:
+            st.write(f"Viscosidade Cinemática (m²/ss): {agua.nu:.6f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Viscosidade Cinemática.]")
+        try:
+            st.write(f"Condutividade Térmica (W/m·K): {agua.k:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Condutividade Térmica.]")
+        try:
+            st.write(f"Difusividade Térmica (m²/s): {agua.alfa:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Difusividade Térmica.]")
+        try:
+            st.write(f"Velocidade do Som (m/s): {agua.w:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Velocidade do Som.]")
+        try:
+            st.write(f"Tensão de Superfície (N/m): {agua.sigma:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Tensão de Superfície.]")
+        try:
+            st.write(f"Número de Prandtl: {agua.Prandt:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular o Número de Prandtl.]")
+        try:
+            st.write(f"Temperatura Reduzida: {agua.Tr:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Temperatura Reduzida.]")
+        try:
+            st.write(f"Pressão Reduzida: {agua.Pr:.5f}")
+        except Exception as e:
+            st.caption(f":red[Não foi possível calcular a Pressão Reduzida.]")
     else:
         st.error(f"Essa combinação de propriedades não está implementada ainda :(")
